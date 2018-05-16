@@ -12,3 +12,4 @@
 //
 //= require rails-ujs
 //= require_tree .
+//= require bootstrap/dist/js/bootstrap.min.js
