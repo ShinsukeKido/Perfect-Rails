@@ -2,6 +2,8 @@
 <html>
   <head>
     <title>PerfectRails</title>
+    <meta charset='utf-8'>
+    <meta name='viewport' content='width=device-width, initial-scale=1.0'>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
@@ -10,6 +12,15 @@
   </head>
 
   <body>
-    <%= yield %>
+    <header class='navbar navbar-default' role='navigation'>
+      <div class='container'>
+        <div class='navbar-header'>
+          <%= link_to 'AwesomeEvents', root_path, class: 'navbar-brand' %>
+        </div>
+      </div>
+    </header>
+    <div class='container'>
+      <%= yield %>
+    </div>
   </body>
 </html>
