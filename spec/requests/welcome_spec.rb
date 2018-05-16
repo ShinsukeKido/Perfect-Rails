@@ -1,9 +1,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Welcome', type: :request do
-  describe 'GET Welcome#index' do
+  describe 'root' do
     it 'returns http success' do
-      get '/welcome/index'
+      get '/'
       expect(response).to have_http_status(:success)
     end
   end
