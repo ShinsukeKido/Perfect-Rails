@@ -163,3 +163,7 @@ Rails/SkipsModelValidations:
 # @see http://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Rails/Validation
 Rails/Validation:
   Enabled: false
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*'
