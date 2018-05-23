@@ -51,4 +51,16 @@ RSpec.describe SessionsController, type: :request do
       end
     end
   end
+
+  describe '#destroy' do
+    before { get '/logout' }
+
+    it 'sessionがリセットされていること' do
+      expect(session[:user_id]).to be_nil
+    end
+
+    it 'ログアウト後トップページにリダイレクトすること' do
+      expect(response).to redirect_to root_path
+    end
+  end
 end
