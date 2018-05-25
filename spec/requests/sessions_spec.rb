@@ -1,19 +1,19 @@
 require 'rails_helper'
 
 RSpec.describe SessionsController, type: :request do
+  before do
+    OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(
+      provider: 'twitter',
+      uid: '0123456789',
+      info: {
+        nickname: 'hogehoge',
+        image: 'http://image.example.com',
+      },
+    )
+  end
+
   describe '#create' do
     subject { get '/auth/twitter/callback' }
-
-    before do
-      OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(
-        provider: 'twitter',
-        uid: '0123456789',
-        info: {
-          nickname: 'hogehoge',
-          image: 'http://image.example.com',
-        },
-      )
-    end
 
     context 'ユーザが未登録の場合' do
       it 'ユーザを新規作成すること' do
