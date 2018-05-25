@@ -53,7 +53,10 @@ RSpec.describe SessionsController, type: :request do
   end
 
   describe '#destroy' do
-    before { get '/logout' }
+    before do
+      get '/auth/twitter/callback'
+      get '/logout'
+    end
 
     it 'sessionがリセットされていること' do
       expect(session[:user_id]).to be_nil
