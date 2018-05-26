@@ -167,3 +167,6 @@ Rails/Validation:
 Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
+
+Rails/InverseOf:
+  Enabled: false
