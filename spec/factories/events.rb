@@ -3,8 +3,8 @@ FactoryBot.define do
     owner_id 1
     name 'meetup'
     place 'shinjuku'
-    start_time '2018-05-25 16:06:22'
-    end_time '2018-05-25 17:06:22'
+    start_time DateTime.new(2018, 5, 28, 14, 00)
+    end_time DateTime.new(2018, 5, 28, 15, 00)
     content 'MyText'
   end
 end
