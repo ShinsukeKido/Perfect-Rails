@@ -170,3 +170,13 @@ Metrics/BlockLength:
 
 Rails/InverseOf:
   Enabled: false
+
+Style/DateTime:
+  Enabled: false
+
+Rails/TimeZone:
+  Enabled: false
+
+Style/NumericLiteralPrefix:
+  Enabled: false
+
