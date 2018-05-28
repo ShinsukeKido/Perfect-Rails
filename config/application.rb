@@ -30,5 +30,7 @@ module PerfectRails
     config.generators.system_tests = nil
 
     config.time_zone = 'Tokyo'
+
+    config.i18n.default_locale = :ja
   end
 end
