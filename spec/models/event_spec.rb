@@ -13,31 +13,31 @@ RSpec.describe Event, type: :model do
       it 'is invalid without name' do
         event = build(:event, name: nil)
         event.valid?
-        expect(event.errors[:name]).to include("can't be blank")
+        expect(event.errors[:name]).to include('を入力してください')
       end
 
       it 'is invalid without place' do
         event = build(:event, place: nil)
         event.valid?
-        expect(event.errors[:place]).to include("can't be blank")
+        expect(event.errors[:place]).to include('を入力してください')
       end
 
       it 'is invalid without content' do
         event = build(:event, content: nil)
         event.valid?
-        expect(event.errors[:content]).to include("can't be blank")
+        expect(event.errors[:content]).to include('を入力してください')
       end
 
       it 'is invalid without start_time' do
         event = build(:event, start_time: nil)
         event.valid?
-        expect(event.errors[:start_time]).to include("can't be blank")
+        expect(event.errors[:start_time]).to include('を入力してください')
       end
 
       it 'is invalid without end_time' do
         event = build(:event, end_time: nil)
         event.valid?
-        expect(event.errors[:end_time]).to include("can't be blank")
+        expect(event.errors[:end_time]).to include('を入力してください')
       end
     end
 
@@ -45,19 +45,19 @@ RSpec.describe Event, type: :model do
       it 'is invalid with name that has more than 50 characters ' do
         event = build(:event, name: 'a' * 51)
         event.valid?
-        expect(event.errors[:name][0]).to include('is too long')
+        expect(event.errors[:name][0]).to include('は50文字以内で入力してください')
       end
 
       it 'is invalid with place that has more than 100 characters ' do
         event = build(:event, place: 'a' * 101)
         event.valid?
-        expect(event.errors[:place][0]).to include('is too long')
+        expect(event.errors[:place][0]).to include('は100文字以内で入力してください')
       end
 
       it 'is invalid with content that has more than 2000 characters ' do
         event = build(:event, content: 'a' * 2001)
         event.valid?
-        expect(event.errors[:content][0]).to include('is too long')
+        expect(event.errors[:content][0]).to include('は2000文字以内で入力してください')
       end
     end
 
