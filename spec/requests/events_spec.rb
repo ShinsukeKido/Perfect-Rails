@@ -14,21 +14,18 @@ RSpec.describe 'EventsController', type: :request do
   end
 
   describe '#new' do
-    subject { get '/events/new' }
     it '@event が新しく作成される' do
-      subject
+      get '/events/new'
       expect(assigns(:event)).to be_a_new(Event)
     end
 
     it 'new.html.erb ページに遷移する' do
-      subject
+      get '/events/new'
       expect(response).to render_template :new
     end
   end
 
   describe '#create' do
-    subject { post '/events', params: params }
-
     context 'イベント作成ページで、正しい値が入力された場合' do
       let(:params) do
         {
@@ -44,7 +41,7 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       it 'イベントを新規作成する' do
-        expect { subject }.to change { Event.count }.by(1)
+        expect { post '/events', params: params }.to change { Event.count }.by(1)
       end
     end
     context 'イベント作成ページで、正しくない値が入力された場合' do
@@ -62,11 +59,11 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       it '新しいイベントが作成されない' do
-        expect { subject }.not_to change { Event.count }
+        expect { post '/events', params: params }.not_to change { Event.count }
       end
 
       it 'new.html.erb ページに遷移する' do
-        subject
+        post '/events', params: params
         expect(response).to render_template :new
       end
     end
