@@ -27,10 +27,7 @@ RSpec.describe 'EventsController', type: :request do
   end
 
   describe '#create' do
-    subject do
-      post '/events',
-           params: params
-    end
+    subject { post '/events', params: params }
 
     context 'イベント作成ページで、正しい値が入力された場合' do
       let(:params) do
