@@ -18,6 +18,11 @@ RSpec.describe Event, type: :model do
 
   describe '#start_time' do
     it { should validate_presence_of(:start_time) }
+
+    it 'start_timeがend_timeより遅いとバリデーションエラーが起きる ' do
+      event = build(:event, owner_id: 1, start_time: Time.zone.local(2018, 5, 28, 15, 0o0), end_time: Time.zone.local(2018, 5, 28, 14, 0o0))
+      expect(event).to be_invalid
+    end
   end
 
   describe '#end_time' do
