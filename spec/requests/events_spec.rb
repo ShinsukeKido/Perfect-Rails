@@ -37,8 +37,8 @@ RSpec.describe 'EventsController', type: :request do
             name: 'event',
             place: 'place',
             content: 'sentence',
-            start_time: DateTime.new(2018, 5, 28, 14, 00),
-            end_time: DateTime.new(2018, 5, 28, 15, 00),
+            start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+            end_time: Time.zone.local(2018, 5, 28, 15, 0o0),
           },
         }
       end
@@ -55,8 +55,8 @@ RSpec.describe 'EventsController', type: :request do
             name: 'event',
             place: 'tokyo',
             content: 'sentence',
-            start_time: DateTime.new(2018, 5, 28, 14, 00),
-            end_time: DateTime.new(2018, 5, 28, 14, 00),
+            start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+            end_time: Time.zone.local(2018, 5, 28, 14, 0o0),
           },
         }
       end
