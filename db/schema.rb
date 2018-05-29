@@ -16,7 +16,7 @@ ActiveRecord::Schema.define(version: 2018_05_25_070622) do
   enable_extension "plpgsql"
 
   create_table "events", force: :cascade do |t|
-    t.integer "owner_id"
+    t.integer "owner_id", null: false
     t.string "name", null: false
     t.string "place", null: false
     t.datetime "start_time", null: false
