@@ -168,15 +168,8 @@ Metrics/BlockLength:
   Exclude:
     - 'spec/**/*'
 
+# Rails5 ではデフォルトの機能として備わっているため。
+# @see https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Rails/InverseOf
 Rails/InverseOf:
-  Enabled: false
-
-Style/DateTime:
-  Enabled: false
-
-Rails/TimeZone:
-  Enabled: false
-
-Style/NumericLiteralPrefix:
   Enabled: false
 
