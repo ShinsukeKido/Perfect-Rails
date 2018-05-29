@@ -30,7 +30,6 @@ RSpec.describe 'EventsController', type: :request do
       let(:params) do
         {
           event: {
-            owner_id: 1,
             name: 'event',
             place: 'place',
             content: 'sentence',
@@ -48,7 +47,6 @@ RSpec.describe 'EventsController', type: :request do
       let(:params) do
         {
           event: {
-            owner_id: 1,
             name: 'event',
             place: 'tokyo',
             content: 'sentence',
