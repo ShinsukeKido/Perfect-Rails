@@ -172,4 +172,3 @@ Metrics/BlockLength:
 # @see https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Rails/InverseOf
 Rails/InverseOf:
   Enabled: false
-
