@@ -171,6 +171,7 @@ Metrics/BlockLength:
     - 'spec/**/*'
 
 # inverse_ofをしようすると、:through関連付けとの併用、:polymorphic関連付けと併用、:as関連付けと併用ができないため、先の決まっていない開発には不向きなので今回は削除。
+#
 # @see https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Rails/InverseOf
 # @see https://railsguides.jp/association_basics.html#%E5%8F%8C%E6%96%B9%E5%90%91%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91
 Rails/InverseOf:
