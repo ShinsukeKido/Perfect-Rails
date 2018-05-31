@@ -1,5 +1,5 @@
 FactoryBot.define do
-  factory :user do
+  factory :user, aliases: [:owner] do
     provider 'sns'
     uid '12345'
     nickname 'tom'
