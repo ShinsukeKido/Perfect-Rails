@@ -72,7 +72,7 @@ RSpec.describe 'EventsController', type: :request do
 
   context 'ログインが不要な場合' do
     describe '#show' do
-      let(:event) { create(:event, owner_id: create(:user).id) }
+      let(:event) { create(:event) }
 
       it 'show.html.erb ページに遷移する' do
         get "/events/#{event.id}"
