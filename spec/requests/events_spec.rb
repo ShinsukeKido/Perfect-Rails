@@ -15,11 +15,6 @@ RSpec.describe 'EventsController', type: :request do
     end
 
     describe '#new' do
-      it '@event が新しく作成される' do
-        get '/events/new'
-        expect(assigns(:event)).to be_a_new(Event)
-      end
-
       it 'new.html.erb ページに遷移する' do
         get '/events/new'
         expect(response).to render_template :new
@@ -78,11 +73,6 @@ RSpec.describe 'EventsController', type: :request do
   context 'ログインが不要な場合' do
     describe '#show' do
       let(:event) { create(:event, owner_id: create(:user).id) }
-
-      it '@event にevents テーブルのレコードが格納されている' do
-        get "/events/#{event.id}"
-        expect(assigns(:event)).to eq event
-      end
 
       it 'show.html.erb ページに遷移する' do
         get "/events/#{event.id}"
