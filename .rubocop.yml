@@ -177,9 +177,3 @@ Metrics/BlockLength:
 Rails/InverseOf:
   Enabled: false
 
-# 使用しない変数、event1 の定義を許可させるため。
-#
-# @see https://www.rubydoc.info/gems/rubocop/RuboCop/Cop/Lint/UselessAssignment
-Lint/UselessAssignment:
-  Exclude:
-    - 'spec/requests/welcome_spec.rb'
