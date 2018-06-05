@@ -43,7 +43,13 @@ RSpec.describe 'EventsController', type: :request do
         it 'イベントを新規作成する' do
           expect { post '/events', params: params }.to change { Event.count }.by(1)
         end
+
+        it 'show.html.erb ページへリダイレクトする' do
+          post '/events', params: params
+          expect(response).to redirect_to Event.last
+        end
       end
+
       context 'イベント作成ページで、正しくない値が入力された場合' do
         let(:params) do
           {
