@@ -176,4 +176,3 @@ Metrics/BlockLength:
 # @see https://railsguides.jp/association_basics.html#%E5%8F%8C%E6%96%B9%E5%90%91%E9%96%A2%E9%80%A3%E4%BB%98%E3%81%91
 Rails/InverseOf:
   Enabled: false
-
