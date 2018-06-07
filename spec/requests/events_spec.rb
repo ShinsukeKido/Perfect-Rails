@@ -15,7 +15,7 @@ RSpec.describe 'EventsController', type: :request do
   describe '#new' do
     context 'ログインしている場合' do
       before { get '/auth/twitter/callback' }
-      
+
       it 'new.html.erb ページに遷移する' do
         get '/events/new'
         expect(response).to render_template :new
@@ -104,9 +104,20 @@ RSpec.describe 'EventsController', type: :request do
   describe '#show' do
     let(:event) { create(:event) }
 
-    it 'show.html.erb ページに遷移する' do
-      get "/events/#{event.id}"
-      expect(response).to render_template :show
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
+
+      it 'show.html.erb ページに遷移する' do
+        get "/events/#{event.id}"
+        expect(response).to render_template :show
+      end
+    end
+
+    context 'ログインしていない場合' do
+      it 'show.html.erb ページに遷移する' do
+        get "/events/#{event.id}"
+        expect(response).to render_template :show
+      end
     end
   end
 end
