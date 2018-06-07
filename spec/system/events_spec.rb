@@ -38,7 +38,7 @@ RSpec.describe 'Events', type: :system do
     select '00', from: 'event[end_time(5i)]'
     fill_in 'event[content]', with: 'content_1'
     click_on '作成'
-    
+
     # 作成したイベントの詳細ページへ遷移していることの確認
     expect(page).to have_content '作成しました'
     expect(page).to have_content 'future_event'
