@@ -2,9 +2,9 @@ require 'rails_helper'
 
 RSpec.describe 'Welcome', type: :request do
   describe 'root' do
-    it 'returns http success' do
+    it 'index.html.erb ページに遷移する' do
       get '/'
-      expect(response).to have_http_status(:success)
+      expect(response).to render_template :index
     end
   end
 end
