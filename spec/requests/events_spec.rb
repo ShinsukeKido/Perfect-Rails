@@ -31,9 +31,57 @@ RSpec.describe 'EventsController', type: :request do
   end
 
   describe '#create' do
-    before { get '/auth/twitter/callback' }
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
 
-    context 'イベント作成ページで、正しい値が入力された場合' do
+      context 'イベント作成ページで、正しい値が入力された場合' do
+        let(:params) do
+          {
+            event: {
+              name: 'event',
+              place: 'place',
+              content: 'sentence',
+              start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+              end_time: Time.zone.local(2018, 5, 28, 15, 0o0),
+            },
+          }
+        end
+
+        it 'イベントを新規作成する' do
+          expect { post '/events', params: params }.to change { Event.count }.by(1)
+        end
+
+        it 'show.html.erb ページへリダイレクトする' do
+          post '/events', params: params
+          expect(response).to redirect_to Event.last
+        end
+      end
+
+      context 'イベント作成ページで、正しくない値が入力された場合' do
+        let(:params) do
+          {
+            event: {
+              name: 'event',
+              place: 'tokyo',
+              content: 'sentence',
+              start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+              end_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+            },
+          }
+        end
+
+        it '新しいイベントが作成されない' do
+          expect { post '/events', params: params }.not_to change { Event.count }
+        end
+
+        it 'new.html.erb ページに遷移する' do
+          post '/events', params: params
+          expect(response).to render_template :new
+        end
+      end
+    end
+
+    context 'ログインしていない場合' do
       let(:params) do
         {
           event: {
@@ -46,36 +94,9 @@ RSpec.describe 'EventsController', type: :request do
         }
       end
 
-      it 'イベントを新規作成する' do
-        expect { post '/events', params: params }.to change { Event.count }.by(1)
-      end
-
-      it 'show.html.erb ページへリダイレクトする' do
+      it 'params で正しい値が送られても、トップページにリダイレクトする' do
         post '/events', params: params
-        expect(response).to redirect_to Event.last
-      end
-    end
-
-    context 'イベント作成ページで、正しくない値が入力された場合' do
-      let(:params) do
-        {
-          event: {
-            name: 'event',
-            place: 'tokyo',
-            content: 'sentence',
-            start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
-            end_time: Time.zone.local(2018, 5, 28, 14, 0o0),
-          },
-        }
-      end
-
-      it '新しいイベントが作成されない' do
-        expect { post '/events', params: params }.not_to change { Event.count }
-      end
-
-      it 'new.html.erb ページに遷移する' do
-        post '/events', params: params
-        expect(response).to render_template :new
+        expect(response).to redirect_to root_path
       end
     end
   end
