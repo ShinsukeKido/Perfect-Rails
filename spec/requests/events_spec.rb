@@ -94,7 +94,11 @@ RSpec.describe 'EventsController', type: :request do
         }
       end
 
-      it 'params で正しい値が送られても、トップページにリダイレクトする' do
+      it 'params で正しい値が送られても、新しいイベントが作成されない' do
+        expect { post '/events', params: params }.not_to change { Event.count }
+      end
+
+      it 'トップページにリダイレクトする' do
         post '/events', params: params
         expect(response).to redirect_to root_path
       end
