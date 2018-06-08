@@ -90,11 +90,24 @@ RSpec.describe 'Events', type: :system do
     expect(page).to have_content 'content_1'
     expect(page).to have_content 'hogehoge'
 
+    # イベント編集ページにアクセスできることの確認
+    click_on 'イベントを編集する'
+
+    # 無効な値は弾かれる弾かれることの確認
+    select '2014', from: 'event[end_time(1i)]'
+    click_on '更新'
+    expect(page).to have_content '開始時間は終了時間よりも前に設定してください'
+
+    # イベントを更新できることの確認
+    select '2019', from: 'event[end_time(1i)]'
+    click_on '更新'
+    expect(page).to have_content '更新しました'
+
     # ログアウト後も、トップページに開始時間が未来のイベントが表示されていることの確認
     click_on 'ログアウト'
     expect(page).to have_content 'future_event'
     expect(page).to have_content '2018/07/01 12:00'
-    expect(page).to have_content '2018/07/01 13:00'
+    expect(page).to have_content '2019/07/01 13:00'
     expect(page).not_to have_content 'past_event'
 
     # ログアウト後はイベント作成ページにアクセスできないことの確認
@@ -107,8 +120,21 @@ RSpec.describe 'Events', type: :system do
     expect(page).to have_content 'future_event'
     expect(page).to have_content 'place_1'
     expect(page).to have_content '2018/07/01 12:00'
-    expect(page).to have_content '2018/07/01 13:00'
+    expect(page).to have_content '2019/07/01 13:00'
     expect(page).to have_content 'content_1'
     expect(page).to have_content 'hogehoge'
+
+    # ログアウト後は、イベント編集、イベント削除のリンクが無いことの確認
+    expect(page).not_to have_content 'イベントを編集する'
+    expect(page).not_to have_content 'イベントを削除する'
+
+    # イベントを削除できることの確認
+    click_on 'Twitterでログイン'
+    click_on 'future_event'
+    click_on 'イベントを削除する'
+    expect(page.driver.browser.switch_to.alert.text).to eq '本当に削除しますか？'
+    page.driver.browser.switch_to.alert.accept
+    expect(page).to have_content '削除しました'
+    expect(page).not_to have_content 'future_event'
   end
 end
