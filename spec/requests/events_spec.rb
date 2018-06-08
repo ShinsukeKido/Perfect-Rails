@@ -124,4 +124,138 @@ RSpec.describe 'EventsController', type: :request do
       end
     end
   end
+
+  describe '#edit' do
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
+
+      let(:event) { create(:event, owner_id: User.first.id) }
+
+      it 'edit.html.erb ページに遷移する' do
+        get "/events/#{event.id}/edit"
+        expect(response).to render_template :edit
+      end
+    end
+
+    context 'ログインしていない場合' do
+      let(:event) { create(:event) }
+
+      it 'トップページにリダイレクトする' do
+        get "/events/#{event.id}/edit"
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
+
+  describe '#update' do
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
+
+      let(:event) { create(:event, owner_id: User.first.id) }
+
+      context 'イベント編集ページで、正しい値が入力された場合' do
+        let(:params) do
+          {
+            event: {
+              name: 'event',
+              place: 'place',
+              content: 'sentence',
+              start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+              end_time: Time.zone.local(2018, 5, 28, 15, 0o0),
+            },
+          }
+        end
+
+        it 'イベントを更新する' do
+          patch "/events/#{event.id}/", params: params
+          expect(event.name).not_to eq Event.last.name
+        end
+
+        it 'show.html.erb ページにリダイレクトする' do
+          patch "/events/#{event.id}/", params: params
+          expect(response).to redirect_to Event.last
+        end
+      end
+
+      context 'イベント編集ページで、正しくない値が入力された場合' do
+        let(:params) do
+          {
+            event: {
+              name: 'event',
+              place: 'tokyo',
+              content: 'sentence',
+              start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+              end_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+            },
+          }
+        end
+
+        it 'イベントを更新しない' do
+          patch "/events/#{event.id}/", params: params
+          expect(event.name).to eq Event.last.name
+        end
+
+        it 'edit.html.erb ページに遷移する' do
+          patch "/events/#{event.id}/", params: params
+          expect(response).to render_template :edit
+        end
+      end
+    end
+
+    context 'ログインしていない場合' do
+      let(:event) { create(:event) }
+
+      let(:params) do
+        {
+          event: {
+            name: 'event',
+            place: 'place',
+            content: 'sentence',
+            start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
+            end_time: Time.zone.local(2018, 5, 28, 15, 0o0),
+          },
+        }
+      end
+
+      it 'params で正しい値が送られても、イベントが更新されない' do
+        patch "/events/#{event.id}/", params: params
+        expect(event.name).to eq Event.last.name
+      end
+
+      it 'トップページにリダイレクトする' do
+        patch "/events/#{event.id}/", params: params
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
+
+  describe '#destroy' do
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
+
+      let!(:event) { create(:event, owner_id: User.first.id) }
+
+      it 'イベントを削除する' do
+        expect { delete "/events/#{event.id}" }.to change { Event.count }.by(-1)
+      end
+
+      it 'トップページへリダイレクトする' do
+        delete "/events/#{event.id}"
+        expect(response).to redirect_to root_path
+      end
+    end
+
+    context 'ログインしていない場合' do
+      let!(:event) { create(:event) }
+
+      it 'イベントを削除できない' do
+        expect { delete "/events/#{event.id}" }.not_to change { Event.count }
+      end
+
+      it 'トップページへリダイレクトする' do
+        delete "/events/#{event.id}"
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
 end
