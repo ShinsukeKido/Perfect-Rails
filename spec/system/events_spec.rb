@@ -13,6 +13,9 @@ RSpec.describe 'Events', type: :system do
 
     # 現在時刻を、2018/01/01 00:00 に設定
     travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0)
+
+    # ログインユーザー以外のユーザーが作成したイベントを用意しておく
+    create(:event, name: 'other_user_event')
   end
 
   it 'トップページからログイン、イベント作成、イベント閲覧、ログアウト後のイベント閲覧を順番に行う' do
@@ -136,5 +139,10 @@ RSpec.describe 'Events', type: :system do
     page.driver.browser.switch_to.alert.accept
     expect(page).to have_content '削除しました'
     expect(page).not_to have_content 'future_event'
+
+    # 他のユーザーが作成したイベントの詳細ページには、イベント編集、イベント削除のリンクが無いことの確認
+    click_on 'other_user_event'
+    expect(page).not_to have_content 'イベントを編集する'
+    expect(page).not_to have_content 'イベントを削除する'
   end
 end
