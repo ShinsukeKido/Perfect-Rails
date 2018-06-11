@@ -57,7 +57,7 @@ RSpec.describe 'EventsController', type: :request do
 
         it 'show.html.erb ページへリダイレクトする' do
           post '/events', params: params
-          expect(response).to redirect_to Event.last
+          expect(response).to redirect_to Event.order(:created_at).last
         end
       end
 
