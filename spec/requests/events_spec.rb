@@ -59,7 +59,7 @@ RSpec.describe 'EventsController', type: :request do
         end
       end
 
-      context 'イベント作成ページで、正しくない値が入力された場合' do
+      context 'イベント作成ページで、開始時間と終了時間に、同じ値が入力された場合' do
         before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
         let(:params) do
@@ -197,7 +197,7 @@ RSpec.describe 'EventsController', type: :request do
           end
         end
 
-        context 'イベント編集ページで、正しくない値が入力された場合' do
+        context 'イベント編集ページで、開始時間と終了時間に、同じ値が入力された場合' do
           before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
           let(:params) do
