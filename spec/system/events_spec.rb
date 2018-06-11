@@ -107,6 +107,7 @@ RSpec.describe 'Events', type: :system do
     expect(page).to have_content '更新しました'
 
     # イベントを削除できることの確認
+    click_on 'AwesomeEvents'
     click_on 'future_event'
     click_on 'イベントを削除する'
     expect(page.driver.browser.switch_to.alert.text).to eq '本当に削除しますか？'
