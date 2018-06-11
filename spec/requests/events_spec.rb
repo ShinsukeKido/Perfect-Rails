@@ -179,7 +179,7 @@ RSpec.describe 'EventsController', type: :request do
           let(:params) do
             {
               event: {
-                name: 'event',
+                name: 'after_event',
                 place: 'place',
                 content: 'sentence',
                 start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
@@ -189,8 +189,7 @@ RSpec.describe 'EventsController', type: :request do
           end
 
           it 'イベントを更新する' do
-            patch "/events/#{event.id}/", params: params
-            expect(event.name).not_to eq Event.last.name
+            expect { patch "/events/#{event.id}/", params: params }.to change { Event.find(event.id).name }.from('before_event').to('after_event')
           end
 
           it 'show.html.erb ページにリダイレクトする' do
@@ -205,7 +204,7 @@ RSpec.describe 'EventsController', type: :request do
           let(:params) do
             {
               event: {
-                name: 'event',
+                name: 'after_event',
                 place: 'tokyo',
                 content: 'sentence',
                 start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
@@ -215,8 +214,7 @@ RSpec.describe 'EventsController', type: :request do
           end
 
           it 'イベントを更新しない' do
-            patch "/events/#{event.id}/", params: params
-            expect(event.name).to eq Event.last.name
+            expect { patch "/events/#{event.id}/", params: params }.not_to change { Event.find(event.id).name }
           end
 
           it 'edit.html.erb ページに遷移する' do
@@ -227,14 +225,14 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       context '対象のイベントを、ログインユーザー以外のユーザーが作成している場合' do
-        let(:event) { create(:event) }
         before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
+        let(:event) { create(:event, name: 'before_event') }
 
         let(:params) do
           {
             event: {
-              name: 'event',
+              name: 'after_event',
               place: 'place',
               content: 'sentence',
               start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
@@ -244,8 +242,7 @@ RSpec.describe 'EventsController', type: :request do
         end
 
         it 'params で正しい値が送られても、イベントが更新されない' do
-          patch "/events/#{event.id}/", params: params
-          expect(event.name).to eq Event.last.name
+          expect { patch "/events/#{event.id}/", params: params }.not_to change { Event.find(event.id).name }
         end
 
         it 'error.html.erb ページに遷移する' do
@@ -256,14 +253,14 @@ RSpec.describe 'EventsController', type: :request do
     end
 
     context 'ログインしていない場合' do
-      let(:event) { create(:event) }
       before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
+      let(:event) { create(:event, name: 'before_event') }
 
       let(:params) do
         {
           event: {
-            name: 'event',
+            name: 'after_event',
             place: 'place',
             content: 'sentence',
             start_time: Time.zone.local(2018, 5, 28, 14, 0o0),
@@ -273,8 +270,7 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       it 'params で正しい値が送られても、イベントが更新されない' do
-        patch "/events/#{event.id}/", params: params
-        expect(event.name).to eq Event.last.name
+        expect { patch "/events/#{event.id}/", params: params }.not_to change { Event.find(event.id).name }
       end
 
       it 'トップページにリダイレクトする' do
