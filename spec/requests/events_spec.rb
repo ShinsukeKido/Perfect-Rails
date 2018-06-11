@@ -195,7 +195,7 @@ RSpec.describe 'EventsController', type: :request do
 
           it 'show.html.erb ページにリダイレクトする' do
             patch "/events/#{event.id}/", params: params
-            expect(response).to redirect_to Event.last
+            expect(response).to redirect_to Event.find(event.id)
           end
         end
 
