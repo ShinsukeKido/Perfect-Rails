@@ -18,7 +18,7 @@ RSpec.describe 'Events', type: :system do
     create(:event, name: 'other_user_event')
   end
 
-  it 'トップページからログイン、イベント作成、イベント閲覧、ログアウト後のイベント閲覧を順番に行う' do
+  it 'ログイン後、イベント作成、編集、閲覧を行う' do
     # トップページへアクセスする
     visit '/'
 
@@ -96,7 +96,7 @@ RSpec.describe 'Events', type: :system do
     # イベント編集ページにアクセスできることの確認
     click_on 'イベントを編集する'
 
-    # 無効な値は弾かれる弾かれることの確認
+    # 終了時間が開始時間よりも早いなどの、無効な値は弾かれることの確認
     select '2014', from: 'event[end_time(1i)]'
     click_on '更新'
     expect(page).to have_content '開始時間は終了時間よりも前に設定してください'
@@ -106,33 +106,7 @@ RSpec.describe 'Events', type: :system do
     click_on '更新'
     expect(page).to have_content '更新しました'
 
-    # ログアウト後も、トップページに開始時間が未来のイベントが表示されていることの確認
-    click_on 'ログアウト'
-    expect(page).to have_content 'future_event'
-    expect(page).to have_content '2018/07/01 12:00'
-    expect(page).to have_content '2019/07/01 13:00'
-    expect(page).not_to have_content 'past_event'
-
-    # ログアウト後はイベント作成ページにアクセスできないことの確認
-    click_on 'イベントを作る'
-    expect(page).to have_content 'ログインしてください'
-    expect(page).to have_content 'イベント一覧'
-
-    # ログアウト後も、イベント詳細ページにアクセスできることの確認
-    click_on 'future_event'
-    expect(page).to have_content 'future_event'
-    expect(page).to have_content 'place_1'
-    expect(page).to have_content '2018/07/01 12:00'
-    expect(page).to have_content '2019/07/01 13:00'
-    expect(page).to have_content 'content_1'
-    expect(page).to have_content 'hogehoge'
-
-    # ログアウト後は、イベント編集、イベント削除のリンクが無いことの確認
-    expect(page).not_to have_content 'イベントを編集する'
-    expect(page).not_to have_content 'イベントを削除する'
-
     # イベントを削除できることの確認
-    click_on 'Twitterでログイン'
     click_on 'future_event'
     click_on 'イベントを削除する'
     expect(page.driver.browser.switch_to.alert.text).to eq '本当に削除しますか？'
@@ -142,6 +116,25 @@ RSpec.describe 'Events', type: :system do
 
     # 他のユーザーが作成したイベントの詳細ページには、イベント編集、イベント削除のリンクが無いことの確認
     click_on 'other_user_event'
+    expect(page).not_to have_content 'イベントを編集する'
+    expect(page).not_to have_content 'イベントを削除する'
+  end
+
+  it 'ログインせずに、イベント作成、編集、閲覧を試みる' do
+    # トップページへアクセスし、イベント一覧が表示されていることの確認
+    visit '/'
+    expect(page).to have_content 'other_user_event'
+
+    # ログインしていないと、イベント作成ページにアクセスできないことの確認
+    click_on 'イベントを作る'
+    expect(page).to have_content 'ログインしてください'
+    expect(page).to have_content 'イベント一覧'
+
+    # ログインしていなくても、イベント詳細ページにアクセスできることの確認
+    click_on 'other_user_event'
+    expect(page).to have_content 'other_user_event'
+
+    # ログインしていないと、イベント編集、イベント削除のリンクが無いことの確認
     expect(page).not_to have_content 'イベントを編集する'
     expect(page).not_to have_content 'イベントを削除する'
   end
