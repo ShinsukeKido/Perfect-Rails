@@ -1,6 +1,8 @@
 require 'rails_helper'
 
 RSpec.describe 'EventsController', type: :request do
+  let!(:user) { create(:user, provider: 'twitter', uid: '0123456789', nickname: 'hogehoge', image_url: 'http://image.example.com') }
+
   before do
     OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(
       provider: 'twitter',
@@ -136,7 +138,7 @@ RSpec.describe 'EventsController', type: :request do
       before { get '/auth/twitter/callback' }
 
       context '対象のイベントを、ログインユーザーが作成している場合' do
-        let(:event) { create(:event, owner_id: User.first.id) }
+        let(:event) { create(:event, owner_id: user.id) }
 
         it 'edit.html.erb ページに遷移する' do
           get "/events/#{event.id}/edit"
@@ -169,7 +171,7 @@ RSpec.describe 'EventsController', type: :request do
       before { get '/auth/twitter/callback' }
 
       context '対象のイベントを、ログインユーザーが作成している場合' do
-        let(:event) { create(:event, owner_id: User.first.id) }
+        let(:event) { create(:event, name: 'before_event', owner_id: user.id) }
 
         context 'イベント編集ページで、正しい値が入力された場合' do
           before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
@@ -287,7 +289,7 @@ RSpec.describe 'EventsController', type: :request do
       before { get '/auth/twitter/callback' }
 
       context '対象のイベントを、ログインユーザーが作成している場合' do
-        let!(:event) { create(:event, owner_id: User.first.id) }
+        let!(:event) { create(:event, owner_id: user.id) }
 
         it 'イベントを削除する' do
           expect { delete "/events/#{event.id}" }.to change { Event.count }.by(-1)
