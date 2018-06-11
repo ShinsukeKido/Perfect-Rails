@@ -17,6 +17,8 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time' do
+    before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
+
     it { should validate_presence_of(:start_time) }
 
     it 'start_timeがend_timeより遅いとバリデーションエラーが起きる ' do
