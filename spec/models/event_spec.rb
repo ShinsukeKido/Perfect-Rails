@@ -53,7 +53,7 @@ RSpec.describe Event, type: :model do
     end
 
     context 'userが存在ない場合' do
-      let(:user) {}
+      let(:user) { nil }
       let(:event) { create(:event) }
 
       it 'false を返す' do
