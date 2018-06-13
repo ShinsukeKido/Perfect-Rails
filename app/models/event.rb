@@ -9,7 +9,8 @@ class Event < ApplicationRecord
   validate :start_time_should_be_before_end_time
 
   def created_by?(user)
-    owner_id == user.id if user
+    return owner_id == user.id if user
+    false
   end
 
   private

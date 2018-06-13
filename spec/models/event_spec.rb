@@ -56,8 +56,8 @@ RSpec.describe Event, type: :model do
       let(:user) {}
       let(:event) { create(:event) }
 
-      it 'nil を返す' do
-        is_expected.to eq nil
+      it 'false を返す' do
+        is_expected.to eq false
       end
     end
   end
