@@ -305,7 +305,7 @@ RSpec.describe 'EventsController', type: :request do
         end
 
         it 'error.html.erb ページに遷移する' do
-          get "/events/#{event.id}/edit"
+          delete "/events/#{event.id}"
           expect(response).to render_template :error404
         end
       end
