@@ -2,11 +2,13 @@ require 'rails_helper'
 
 RSpec.describe 'EventsController', type: :request do
   let!(:user) do
-    create(:user,
-           provider: 'twitter',
-           uid: '0123456789',
-           nickname: 'hogehoge',
-           image_url: 'http://image.example.com',)
+    create(
+      :user,
+      provider: 'twitter',
+      uid: '0123456789',
+      nickname: 'hogehoge',
+      image_url: 'http://image.example.com',
+    )
   end
 
   before do
