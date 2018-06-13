@@ -93,8 +93,6 @@ RSpec.describe 'EventsController', type: :request do
     end
 
     context 'ログインしていない場合' do
-      before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
       let(:params) do
         {
           event: {
@@ -106,6 +104,8 @@ RSpec.describe 'EventsController', type: :request do
           },
         }
       end
+
+      before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
       it 'params で正しい値が送られても、新しいイベントが作成されない' do
         expect { post '/events', params: params }.not_to change { Event.count }
@@ -255,8 +255,6 @@ RSpec.describe 'EventsController', type: :request do
     end
 
     context 'ログインしていない場合' do
-      before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
       let(:event) { create(:event, name: 'before_event') }
 
       let(:params) do
@@ -270,6 +268,8 @@ RSpec.describe 'EventsController', type: :request do
           },
         }
       end
+
+      before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
 
       it 'params で正しい値が送られても、イベントが更新されない' do
         expect { patch "/events/#{event.id}/", params: params }.not_to change { Event.find(event.id).name }
