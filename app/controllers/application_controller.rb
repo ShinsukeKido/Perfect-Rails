@@ -20,7 +20,7 @@ class ApplicationController < ActionController::Base
   end
 
   def error404(e)
-    logger.error [e, *e.backtrace].join('¥n')
+    logger.error [e, *e.backtrace].join("\n")
     render 'error404', status: :not_found, formats: [:html]
   end
 end
