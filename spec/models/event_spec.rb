@@ -17,6 +17,8 @@ RSpec.describe Event, type: :model do
   end
 
   describe '#start_time' do
+    before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
+
     it { should validate_presence_of(:start_time) }
 
     it 'start_timeがend_timeより遅いとバリデーションエラーが起きる ' do
@@ -27,5 +29,36 @@ RSpec.describe Event, type: :model do
 
   describe '#end_time' do
     it { should validate_presence_of(:end_time) }
+  end
+
+  describe '#created_by?(user)' do
+    subject { event.created_by?(user) }
+
+    context 'userがeventを作成している場合' do
+      let(:user) { create(:user) }
+      let(:event) { create(:event, owner_id: user.id) }
+
+      it 'true を返す' do
+        is_expected.to eq true
+      end
+    end
+
+    context 'userがeventを作成していない場合' do
+      let(:user) { create(:user) }
+      let(:event) { create(:event) }
+
+      it 'false を返す' do
+        is_expected.to eq false
+      end
+    end
+
+    context 'userが存在ない場合' do
+      let(:user) { nil }
+      let(:event) { create(:event) }
+
+      it 'false を返す' do
+        is_expected.to eq false
+      end
+    end
   end
 end
