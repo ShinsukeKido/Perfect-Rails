@@ -40,11 +40,12 @@ RSpec.describe 'EventsController', type: :request do
 
   describe '#create' do
     context 'ログインしている場合' do
-      before { get '/auth/twitter/callback' }
+      before do
+        get '/auth/twitter/callback'
+        travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0)
+      end
 
       context 'イベント作成ページで、正しい値が入力された場合' do
-        before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
         let(:params) do
           {
             event: {
@@ -68,8 +69,6 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       context 'イベント作成ページで、開始時間と終了時間に、同じ値が入力された場合' do
-        before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
         let(:params) do
           {
             event: {
@@ -174,14 +173,15 @@ RSpec.describe 'EventsController', type: :request do
 
   describe '#update' do
     context 'ログインしている場合' do
-      before { get '/auth/twitter/callback' }
+      before do
+        get '/auth/twitter/callback'
+        travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0)
+      end
 
       context '対象のイベントを、ログインユーザーが作成している場合' do
         let(:event) { create(:event, name: 'before_event', owner_id: user.id) }
 
         context 'イベント編集ページで、正しい値が入力された場合' do
-          before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
           let(:params) do
             {
               event: {
@@ -205,8 +205,6 @@ RSpec.describe 'EventsController', type: :request do
         end
 
         context 'イベント編集ページで、開始時間と終了時間に、同じ値が入力された場合' do
-          before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
           let(:params) do
             {
               event: {
@@ -231,8 +229,6 @@ RSpec.describe 'EventsController', type: :request do
       end
 
       context '対象のイベントを、ログインユーザー以外のユーザーが作成している場合' do
-        before { travel_to Time.zone.local(2018, 1, 1, 0o0, 0o0) }
-
         let(:event) { create(:event, name: 'before_event') }
 
         let(:params) do
