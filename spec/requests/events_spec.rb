@@ -1,7 +1,13 @@
 require 'rails_helper'
 
 RSpec.describe 'EventsController', type: :request do
-  let!(:user) { create(:user, provider: 'twitter', uid: '0123456789', nickname: 'hogehoge', image_url: 'http://image.example.com') }
+  let!(:user) do
+    create(:user,
+           provider: 'twitter',
+           uid: '0123456789',
+           nickname: 'hogehoge',
+           image_url: 'http://image.example.com',)
+  end
 
   before do
     OmniAuth.config.mock_auth[:twitter] = OmniAuth::AuthHash.new(
