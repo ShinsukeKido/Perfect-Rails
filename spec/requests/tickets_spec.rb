@@ -30,13 +30,7 @@ RSpec.describe 'TicketsController', type: :request do
 
       context '該当イベントにまだ参加していない場合' do
         context 'チケット作成 のmodalで、正しい値が入力された場合' do
-          let(:params) do
-            {
-              ticket: {
-                comment: 'comment',
-              },
-            }
-          end
+          let(:params) { { ticket: { comment: 'comment' } } }
 
           it 'チケットを新規作成する' do
             expect { post "/events/#{event.id}/tickets", params: params }.to change { Ticket.count }.by(1)
@@ -54,13 +48,7 @@ RSpec.describe 'TicketsController', type: :request do
         end
 
         context 'チケット作成のmodal で、comment が31文字以上だった場合' do
-          let(:params) do
-            {
-              ticket: {
-                comment: 'a' * 31,
-              },
-            }
-          end
+          let(:params) { { ticket: { comment: 'a' * 31 } } }
 
           it '新しいチケットが作成されない' do
             expect { post "/events/#{event.id}/tickets", params: params }.not_to change { Ticket.count }
@@ -74,13 +62,7 @@ RSpec.describe 'TicketsController', type: :request do
       end
 
       context '該当イベントに参加している場合' do
-        let(:params) do
-          {
-            ticket: {
-              comment: 'comment',
-            },
-          }
-        end
+        let(:params) { { ticket: { comment: 'comment' } } }
 
         before { post "/events/#{event.id}/tickets", params: params }
 
@@ -91,13 +73,7 @@ RSpec.describe 'TicketsController', type: :request do
     end
 
     context 'ログインしていない場合' do
-      let(:params) do
-        {
-          ticket: {
-            comment: 'comment',
-          },
-        }
-      end
+      let(:params) { { ticket: { comment: 'comment' } } }
 
       it 'params で正しい値が送られても、新しいイベントが作成されない' do
         expect { post "/events/#{event.id}/tickets", params: params }.not_to change { Ticket.count }
