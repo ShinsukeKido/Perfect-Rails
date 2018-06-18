@@ -24,24 +24,6 @@ RSpec.describe 'TicketsController', type: :request do
     )
   end
 
-  describe '#new' do
-    context 'ログインしている場合' do
-      before { get '/auth/twitter/callback' }
-
-      it 'error.html.erb ページに遷移する' do
-        get "/events/#{event.id}/tickets/new"
-        expect(response).to render_template :error404
-      end
-    end
-
-    context 'ログインしていない場合' do
-      it 'トップページにリダイレクトする' do
-        get "/events/#{event.id}/tickets/new"
-        expect(response).to redirect_to root_path
-      end
-    end
-  end
-
   describe '#create' do
     context 'ログインしている場合' do
       before { get '/auth/twitter/callback' }

@@ -18,9 +18,8 @@ RSpec.describe 'Tickets', type: :system do
     # イベントページへアクセスする
     visit "/events/#{event.id}"
 
-    # 参加を試みても、トップページにリダイレクトする
-    click_on '参加する'
-    expect(page).to have_content 'ログインしてください'
+    # ログインを促される
+    expect(page).to have_content '参加するにはログインしてください'
   end
 
   it 'ログイン後、正しいコメントを入力し、イベント参加を行う' do

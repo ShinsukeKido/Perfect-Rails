@@ -1,10 +1,6 @@
 class TicketsController < ApplicationController
   before_action :authenticate
 
-  def new
-    raise ActionController::RoutingError, 'ログイン状態で TicketsController#new にアクセス'
-  end
-
   def create
     ticket = current_user.tickets.build do |t|
       t.event_id = params[:event_id]
