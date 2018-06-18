@@ -85,4 +85,54 @@ RSpec.describe 'TicketsController', type: :request do
       end
     end
   end
+
+  describe '#destroy' do
+    context 'ログインしている場合' do
+      before { get '/auth/twitter/callback' }
+
+      context '対象のチケットを、ログインユーザーが作成している場合' do
+        let!(:ticket) { create(:ticket, user_id: user.id, event_id: event.id) }
+
+        it 'イベントを削除する' do
+          expect { delete "/events/#{event.id}/tickets/#{ticket.id}" }.to change { Ticket.count }.by(-1)
+        end
+
+        it 'イベントページへリダイレクトする' do
+          delete "/events/#{event.id}/tickets/#{ticket.id}"
+          expect(response).to redirect_to event
+        end
+
+        it 'フラッシュメッセージが表示される' do
+          delete "/events/#{event.id}/tickets/#{ticket.id}"
+          expect(flash[:notice]).to eq 'このイベントの参加をキャンセルしました'
+        end
+      end
+
+      context '対象のチケットを、ログインユーザー以外のユーザーが作成している場合' do
+        let!(:ticket) { create(:ticket, event_id: event.id) }
+
+        it 'チケットを削除できない' do
+          expect { delete "/events/#{event.id}" }.not_to change { Event.count }
+        end
+
+        it 'error.html.erb ページに遷移する' do
+          delete "/events/#{event.id}"
+          expect(response).to render_template :error404
+        end
+      end
+    end
+
+    context 'ログインしていない場合' do
+      let!(:ticket) { create(:ticket, event_id: event.id) }
+
+      it 'チケットを削除できない' do
+        expect { delete "/events/#{event.id}" }.not_to change { Event.count }
+      end
+
+      it 'トップページへリダイレクトする' do
+        delete "/events/#{event.id}"
+        expect(response).to redirect_to root_path
+      end
+    end
+  end
 end
