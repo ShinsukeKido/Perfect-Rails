@@ -70,7 +70,7 @@
         </div>
       </div>
     <% elsif logged_in? %>
-      <button class='btn btn-primary btn-lg btn-block' >参加済み</button>
+      <%= link_to '参加をキャンセルする', event_ticket_path(@event, @tickets.find_by(user_id: current_user.id)), method: :delete, class: 'btn btn-warning btn-lg btn-block' %>
     <% else %>
       <button class='btn btn-primary btn-lg btn-block', disabled >参加するにはログインしてください</button>
     <% end %>
