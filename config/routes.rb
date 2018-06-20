@@ -1,4 +1,8 @@
 Rails.application.routes.draw do
+  resource :user, only: :destroy do
+    get 'retire'
+  end
+
   resources :events do
     resources :tickets, only: [:create, :destroy]
   end
