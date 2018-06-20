@@ -156,7 +156,7 @@ RSpec.describe 'EventsController', type: :request do
       context '対象のイベントを、ログインユーザー以外のユーザーが作成している場合' do
         let(:event) { create(:event) }
 
-        it 'ActiveRecord::RecordNotFound が発生し、error.html.erb ページに遷移する' do
+        it '404 ページに遷移する' do
           get "/events/#{event.id}/edit"
           expect(response).to render_template :error404
         end
@@ -249,7 +249,7 @@ RSpec.describe 'EventsController', type: :request do
           expect { patch "/events/#{event.id}/", params: params }.not_to change { Event.find(event.id).name }
         end
 
-        it 'ActiveRecord::RecordNotFound が発生し、error.html.erb ページに遷移する' do
+        it '404 ページに遷移する' do
           get "/events/#{event.id}/edit"
           expect(response).to render_template :error404
         end
@@ -308,7 +308,7 @@ RSpec.describe 'EventsController', type: :request do
           expect { delete "/events/#{event.id}" }.not_to change { Event.count }
         end
 
-        it 'ActiveRecord::RecordNotFound が発生し、error.html.erb ページに遷移する' do
+        it '404 ページに遷移する' do
           delete "/events/#{event.id}"
           expect(response).to render_template :error404
         end

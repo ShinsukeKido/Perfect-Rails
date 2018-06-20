@@ -115,7 +115,7 @@ RSpec.describe 'TicketsController', type: :request do
           expect { delete "/events/#{event.id}" }.not_to change { Event.count }
         end
 
-        it 'ActiveRecord::RecordNotFound が発生し、error.html.erb ページに遷移する' do
+        it '404 ページに遷移する' do
           delete "/events/#{event.id}"
           expect(response).to render_template :error404
         end
