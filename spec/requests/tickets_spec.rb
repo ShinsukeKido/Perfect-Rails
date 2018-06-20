@@ -112,11 +112,11 @@ RSpec.describe 'TicketsController', type: :request do
         let!(:ticket) { create(:ticket, event_id: event.id) }
 
         it 'チケットを削除できない' do
-          expect { delete "/events/#{event.id}" }.not_to change { Event.count }
+          expect { delete "/events/#{event.id}/tickets/#{ticket.id}" }.not_to change { Ticket.count }
         end
 
         it '404 ページに遷移する' do
-          delete "/events/#{event.id}"
+          delete "/events/#{event.id}/tickets/#{ticket.id}"
           expect(response).to render_template :error404
         end
       end
@@ -126,11 +126,11 @@ RSpec.describe 'TicketsController', type: :request do
       let!(:ticket) { create(:ticket, event_id: event.id) }
 
       it 'チケットを削除できない' do
-        expect { delete "/events/#{event.id}" }.not_to change { Event.count }
+        expect { delete "/events/#{event.id}/tickets/#{ticket.id}" }.not_to change { Ticket.count }
       end
 
       it 'トップページへリダイレクトする' do
-        delete "/events/#{event.id}"
+        delete "/events/#{event.id}/tickets/#{ticket.id}"
         expect(response).to redirect_to root_path
       end
     end
