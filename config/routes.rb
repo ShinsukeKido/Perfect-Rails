@@ -1,6 +1,6 @@
 Rails.application.routes.draw do
   resources :events do
-    resources :tickets, only: :create
+    resources :tickets, only: [:create, :destroy]
   end
   root 'welcome#index'
   get '/auth/:provider/callback' => 'sessions#create'

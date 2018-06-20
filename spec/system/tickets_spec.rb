@@ -42,8 +42,14 @@ RSpec.describe 'Tickets', type: :system do
     expect(page).to have_content '参加者'
     expect(page).to have_content 'hogehoge'
 
-    # 参加ボタンが参加済みに変更されている
-    expect(page).to have_content '参加済み'
+    # 参加をキャンセルする
+    click_on '参加をキャンセルする'
+
+    # フラッシュメッセージが表示される
+    expect(page).to have_content 'このイベントの参加をキャンセルしました'
+
+    # キャンセル後は再び参加するボタンが表示される
+    expect(page).to have_content '参加する'
   end
 
   it 'ログイン後、31文字以上のコメントを入力し、イベント参加を試みる' do
