@@ -1,6 +1,9 @@
 class UsersController < ApplicationController
   before_action :authenticate
 
+  def retire
+  end
+
   def destroy
     if current_user.destroy
       session.delete(:user_id)
