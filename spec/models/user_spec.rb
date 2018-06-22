@@ -22,7 +22,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'userの各カラムの値が、OmniAuthの各値と一致する場合' do
-      let!(:user) do
+      before do
         create(
           :user,
           provider: 'twitter',
@@ -38,7 +38,7 @@ RSpec.describe User, type: :model do
     end
 
     context 'userのprovider、uidの値が、OmniAuthの値と一致しない場合' do
-      let!(:user) do
+      before do
         create(
           :user,
           provider: 'facebook',
@@ -57,17 +57,16 @@ RSpec.describe User, type: :model do
   describe '#check_all_events_finished' do
     subject { user.destroy }
 
-    context 'userの公開中未終了イベント、未終了参加イベントが共に存在しない場合' do
-      let!(:user) { create(:user) }
+    let!(:user) { create(:user) }
 
+    context 'userの公開中未終了イベント、未終了参加イベントが共に存在しない場合' do
       it 'ユーザーを削除する' do
         expect { subject }.to change { User.count }.by(-1)
       end
     end
 
     context 'userの公開中未終了イベントが存在する場合' do
-      let!(:user) { create(:user) }
-      let!(:event) { create(:event, owner_id: user.id, start_time: Time.zone.now + 1.hour, end_time: Time.zone.now + 2.hours) }
+      before { create(:event, owner_id: user.id, start_time: Time.zone.now + 1.hour, end_time: Time.zone.now + 2.hours) }
 
       it 'ユーザーを削除しない' do
         expect { subject }.not_to change { User.count }
@@ -84,9 +83,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'userの未終了参加イベントが存在する場合' do
-      let!(:user) { create(:user) }
-      let!(:event) { create(:event, start_time: Time.zone.now + 1.hour, end_time: Time.zone.now + 2.hours) }
-      let!(:ticket) { create(:ticket, user_id: user.id, event_id: event.id) }
+      before do
+        event = create(:event, start_time: Time.zone.now + 1.hour, end_time: Time.zone.now + 2.hours)
+        create(:ticket, user_id: user.id, event_id: event.id)
+      end
 
       it 'ユーザーを削除しない' do
         expect { subject }.not_to change { User.count }
